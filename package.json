@@ -1,0 +1,43 @@
+{
+  "name": "vehicle-registration-orm",
+  "version": "1.0.0",
+  "description": "Vehicle Registration Project in Express with MySQL Sequelize ORM",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srap9499/vehicle-registration-orm.git"
+  },
+  "keywords": [
+    "Vehicle",
+    "Registration",
+    "Express.js",
+    "Sequelize",
+    "ORM",
+    "MySQL"
+  ],
+  "author": "Siddhesh Panchal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/srap9499/vehicle-registration-orm/issues"
+  },
+  "homepage": "https://github.com/srap9499/vehicle-registration-orm#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fast-csv": "^4.3.6",
+    "http-errors": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.2",
+    "sequelize-cli": "^6.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
