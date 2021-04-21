@@ -14,8 +14,12 @@ app.get('/', (req,res) => {
 })
 
 const vehicleRouter = require('./routes/vehicle.routes');
+const userRouter = require('./routes/user.routes');
+const vehicleRegistrationRouter = require('./routes/vehicle-registration.routes');
 
 app.use('/vehicle', vehicleRouter);
+app.use('/user', userRouter);
+app.use('/vehicleRegistration', vehicleRegistrationRouter);
 
 app.listen(port, () => {
     console.log(`Server started on port: ${port}` );

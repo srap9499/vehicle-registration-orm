@@ -3,8 +3,6 @@
 const db = require('../models/db.model');
 const Vehicle = db.vehicle;
 
-console.log(Vehicle);
-
 exports.create = async (req, res) => {
     const { Name, Type } = req.body;
 

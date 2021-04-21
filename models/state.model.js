@@ -1,5 +1,5 @@
 module.exports = async (sequelize, Sequelize) => {
-    const State = await sequelize.define("State", {
+    const State = await sequelize.define("States", {
         ID: {
             type: Sequelize.INTEGER(11)        ,
             autoIncrement: true,
@@ -22,7 +22,8 @@ module.exports = async (sequelize, Sequelize) => {
             allowNull: false
         }
     },{
-        timestamps: false
+        timestamps: false,
+        freezeTableName: true
     });
     
     await State.sync();

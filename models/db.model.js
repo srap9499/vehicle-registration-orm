@@ -20,6 +20,8 @@ const db = {};
 
 db.state = require('./state.model')(sequelize, Sequelize);
 db.vehicle = require('./vehicle.model')(sequelize, Sequelize);
+db.user = require('./user.model')(sequelize, Sequelize);
+db.vehicleRegistration = require('./vehicle-registration.model')(sequelize, Sequelize);
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;

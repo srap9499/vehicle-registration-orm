@@ -1,10 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
     const Vehicle = sequelize.define("Vehicle", {
-        id: {
-            type: Sequelize.INTEGER(11),
-            autoIncrement: true,
-            primaryKey: true,
-        },
         name: {
             type: Sequelize.STRING(64),
             allowNull: false,
@@ -14,7 +9,8 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false
         }
     },{
-        timestamps: false
+        timestamps: false,
+        freezeTableName: true
     });
     
     Vehicle.sync();
