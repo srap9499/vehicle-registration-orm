@@ -1,54 +1,55 @@
 'use strict';
 
+const createError = require('http-errors');
 const db = require('../models/db.model');
 const Vehicle = db.vehicle;
 
-exports.create = async (req, res) => {
+exports.create = async (req, res, next) => {
     const { Name, Type } = req.body;
 
     if (!Name || !Type) {
-        res.status(400).send('Invalid');
+        next(createError(400, 'Please provide all required data: Name and Type of Vehicle!'));
     } else {
         try {
-            await Vehicle.create({name: Name, type: Type});
-            res.status(200).send(`inserted: Successfully!`);
-        } catch(error) {
-            res.status(500).send(error.message);
+            await Vehicle.create({ name: Name, type: Type });
+            res.status(200).send(`Vehicle added successfully! : ${Name}`);
+        } catch (error) {
+            next(error);
         }
     }
 };
 
-exports.findAll = async (req, res) => {
+exports.findAll = async (req, res, next) => {
     try {
         const vehicles = await Vehicle.findAll();
         res.status(200).send({ "Vehicle Data": vehicles });
-    } catch(error) {
-        res.status(500).send(err.message);
+    } catch (error) {
+        next(error);
     }
 };
 
-exports.findOne = async (req, res) => {
+exports.findOne = async (req, res, next) => {
     const { id } = req.params;
 
     if (!id) {
-        res.status(400).send('Invalid!');
+        next(createError(400, 'Please provide propper Vehicle Id!'));
     } else {
         try {
-            const vehicle = await Vehicle.findOne({where: {id: id}});
+            const vehicle = await Vehicle.findOne({ where: { id: id } });
             if (vehicle) {
                 res.status(200).send({ "Vehicle": vehicle });
             } else {
-                res.status(404).send({ message: 'No vehicle found!'});
+                next(createError(404, 'No vehicle data found!'));
             }
-        } catch(error) {
-            res.status(500).send(error.message);
+        } catch (error) {
+            next(error);
         }
     }
 };
 
-exports.update = async (req, res) => {
+exports.update = async (req, res, next) => {
     const { id } = req.params;
-    const { Name, Type} = req.body;
+    const { Name, Type } = req.body;
     const data = {};
     if (Name) {
         data.name = Name;
@@ -58,36 +59,36 @@ exports.update = async (req, res) => {
     }
 
     if (!id || Object.keys(data).length < 1) {
-        res.status(400).send('Invalid!');
+        next(createError(400, 'Please provide valid ID and atleast one required field to update: Name/Type of vehicle!)'));
     } else {
         try {
-            const vehicle = await Vehicle.update(data,{where: {id: id}});
+            const vehicle = await Vehicle.update(data, { where: { id } });
             if (vehicle[0]) {
                 res.status(200).send({ "Vehicle": vehicle });
             } else {
-                res.status(404).send({ message: 'No vehicle updated!'});
+                next(createError(400, 'No vehicle data updated!'));
             }
-        } catch(error) {
-            res.status(500).send(error.message);
+        } catch (error) {
+            next(error);
         }
     }
 };
 
-exports.delete = async (req, res) => {
+exports.delete = async (req, res, next) => {
     const { id } = req.params;
 
     if (!id) {
-        res.status(400).send('Invalid!');
+        next(createError(400, 'Please provide propper Vehicle Id!'));
     } else {
         try {
-            const vehicle = await Vehicle.destroy({where: {id: id}});
+            const vehicle = await Vehicle.destroy({ where: { id: id } });
             if (vehicle) {
-                res.status(200).send({ "Vehicle": vehicle });
+                res.status(200).send({ "Vehicle Deleted Successfully": vehicle });
             } else {
-                res.status(404).send({ message: 'No vehicle deleted!'});
+                next(createError(400, 'No vehicle data deleted!'));
             }
-        } catch(error) {
-            res.status(500).send(error.message);
+        } catch (error) {
+            next(error);
         }
     }
 };

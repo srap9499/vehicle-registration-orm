@@ -2,6 +2,8 @@
 
 const express = require('express');
 
+const { errorHandler } = require('./middlewares/error-handler.middleware');
+
 const app = express();
 
 const port = process.env.PORT | 3000;
@@ -9,7 +11,7 @@ const port = process.env.PORT | 3000;
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
-app.get('/', (req,res) => {
+app.get('/', (req, res, next) => {
     res.send('hello');
 })
 
@@ -20,6 +22,9 @@ const vehicleRegistrationRouter = require('./routes/vehicle-registration.routes'
 app.use('/vehicle', vehicleRouter);
 app.use('/user', userRouter);
 app.use('/vehicleRegistration', vehicleRegistrationRouter);
+
+
+app.use(errorHandler);
 
 app.listen(port, () => {
     console.log(`Server started on port: ${port}` );

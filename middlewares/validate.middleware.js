@@ -1,10 +1,12 @@
 'use strict';
 
+const createError = require('http-errors');
+
 exports.createUser = async (req, res, next) => {
     try {
         const { Name, Email, Password, StateID, Status } = req.body;
         if (!Name || !Email || !Password || !StateID || !Status) {
-            res.status(400).send('Please provide all required fields');
+            next(createError(400, 'Please provide all required fields for Sign-Up: Name, Email, Password, StateID, Status!'));
         } else {
             req.userData = {
                 name: Name,
@@ -17,7 +19,7 @@ exports.createUser = async (req, res, next) => {
         }
     } catch(error) {
         console.log('Error occured while validating input for create user: ', error.message);
-        res.status(500).send("Something went wrong!");
+        next(error);
     }
 };
 
@@ -28,7 +30,7 @@ exports.updateUser = async (req, res, next) => {
         const { Name, Email, Password, StateID, Status } = req.body;
 
         if (!Name && !Email && !Password && !StateID && !Status) {
-            res.status(400).send('Please provide atleast one required fields to update');
+            next(createError(400, 'Please provide atleast one required field to update: Name/Email/Password/StateID/Status'));
         } else {
             const data = {};
             if (Name) {
@@ -51,7 +53,7 @@ exports.updateUser = async (req, res, next) => {
         }
     } catch(error) {
         console.log('Error occured while validating input for update user: ', error.message);
-        res.status(500).send("Something went wrong!");
+        next(error);
     }
 };
 
@@ -59,19 +61,19 @@ exports.createVehicleRegistration = async (req, res, next) => {
     try {
         const { UserID, VehicleID, RegistrationDate, ExpiryDate } = req.body;
         if (!UserID || !VehicleID || !RegistrationDate || !ExpiryDate) {
-            res.status(400).send('Please provide all required fields');
+            next(createError(400, 'Please provide all required fields for Vehicle Registration: UserID, VehicleID, RegistrationDate, ExpiryDate!'));
         } else {
             req.vehicleRegistrationData = {
                 user_id: UserID,
                 vehicle_id: VehicleID,
-                registration_date: RegistrationDate + 'T00:00:00Z',
-                expiry_date: ExpiryDate + 'T00:00:00Z'
+                registration_date: new Date(RegistrationDate),
+                expiry_date: new Date(ExpiryDate)
             }
             next();
         }
     } catch(error) {
         console.log('Error occured while validating input for create user: ', error.message);
-        res.status(500).send("Something went wrong!");
+        next(error);
     }
 };
 
@@ -82,7 +84,7 @@ exports.updateVehicleRegistration = async (req, res, next) => {
         const { UserID, VehicleID, RegistrationDate, ExpiryDate } = req.body;
 
         if (!UserID && !VehicleID && !RegistrationDate && !ExpiryDate) {
-            res.status(400).send('Please provide atleast one required fields to update');
+            next(createError(400, 'Please provide all required fields for Vehicle Registration: UserID/VehicleID/RegistrationDate/ExpiryDate!'));
         } else {
             const data = {};
             if (UserID) {
@@ -92,16 +94,16 @@ exports.updateVehicleRegistration = async (req, res, next) => {
                 data.vehicle_id = VehicleID;
             }
             if (RegistrationDate) {
-                data.registration_date = RegistrationDate + 'T00:00:00Z';
+                data.registration_date = new Date(RegistrationDate);
             }
             if (ExpiryDate) {
-                data.expiry_date = ExpiryDate + 'T00:00:00Z';
+                data.expiry_date = new Date(ExpiryDate);
             }
             req.vehicleRegistrationData = data;
             next();
         }
     } catch(error) {
         console.log('Error occured while validating input for update user: ', error.message);
-        res.status(500).send("Something went wrong!");
+        next(error);
     }
 };
