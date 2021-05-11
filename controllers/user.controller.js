@@ -1,6 +1,7 @@
 'use strict';
 
 const createError = require('http-errors');
+const jwt = require('jsonwebtoken');
 const db = require('../models/db.model');
 const User = db.user;
 
@@ -23,7 +24,7 @@ exports.avoidDuplicateUser = async (req, res, next) => {
     }
 };
 
-exports.create = async (req, res, next) => {
+exports.signUp = async (req, res, next) => {
     try {
         const userData = req.userData;
         const user = await User.create(userData);
@@ -31,6 +32,42 @@ exports.create = async (req, res, next) => {
     } catch (error) {
         console.log('Error occured while creating new user: ', error.message);
         next(error);
+    }
+};
+
+exports.validateSignIn = async (req, res, next) => {
+    const { "Email ID": email, Password: password } = req.body;
+    if (!email || !password) {
+        next(createError(400, 'Please provide Email ID & Password!'));
+    } else {
+        await User.findOne({
+            attributes: [
+                "name",
+                "email",
+                "password"
+            ],
+            where: {
+                email
+            }
+        })
+        .then((data) => {
+            if (!data) {
+                next(createError(400, "Invalid Email Id!"));
+            } else if (data.password != password) {
+                next(createError(400, "Incorrect Password!"));
+            } else {
+                const userData = {
+                    name: data.name,
+                    email: data.email
+                };
+                req.userData = userData;
+                next();
+            }
+        })
+        .catch((err) => {
+            console.log("Error occured while Signing In: ", err.message);
+            next(createError('Something went wrong!'));
+        });
     }
 };
 
@@ -103,4 +140,8 @@ exports.delete = async (req, res, next) => {
         console.log('Error occured while deleting User Data: ', error.message);
         next(error);
     }
+};
+
+exports.getDashboard = async (req, res, next) => {
+    
 };
