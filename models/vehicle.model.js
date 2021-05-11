@@ -1,3 +1,5 @@
+// Sequelize model for Vehicle
+
 module.exports = (sequelize, Sequelize) => {
     const Vehicle = sequelize.define("Vehicle", {
         name: {

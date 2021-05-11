@@ -10,6 +10,7 @@ const {
 const { json2csv } = require('json-2-csv');
 const fs = require('fs');
 
+// Export active user data with vehicle registration details to csv file
 exports.exportToCsv = async (req, res, next) => {
     await User.hasMany(VehicleRegistration, {
         foreignKey: "user_id"

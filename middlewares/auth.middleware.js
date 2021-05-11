@@ -3,6 +3,7 @@
 const { sign, verify } = require('jsonwebtoken');
 const createError = require('http-errors');
 
+// Authorization Middleware
 exports.authorise = async (req, res, next) => {
     const payload = req.userData;
 
@@ -24,6 +25,7 @@ exports.authorise = async (req, res, next) => {
     }
 }
 
+// Authentication Middleware
 exports.authenticate = async (req, res, next) => {
     const authToken = req.headers["authorization"];
 
@@ -40,7 +42,6 @@ exports.authenticate = async (req, res, next) => {
                         name: data.name,
                         email: data.email
                     }
-                    // res.status(200).send('Successfully Authenticated!');
                     next();
                 }
             });

@@ -2,6 +2,7 @@
 
 const stateList = require('./state list.json');
 
+// formatting time-stamp and status in state list.json file
 stateList.forEach(state => {
     state.DateCreated = state.DateCreated.replace("T", " ");
     state.DateCreated = state.DateCreated.replace("Z", "");

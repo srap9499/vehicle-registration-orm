@@ -7,6 +7,7 @@ const stateList = require('../data/state-list');
 
 const stateArray = stateList.slice(0);
 
+// Migrate State data from json file to database table
 (async () => {
     try{
         await State.bulkCreate(stateArray, { validate: true });

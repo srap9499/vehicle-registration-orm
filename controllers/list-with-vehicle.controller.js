@@ -8,6 +8,8 @@ const {
     vehicleRegistration: VehicleRegistration
 } = db;
 
+
+// GET list with vehicle registration and vehicle data by target User
 exports.findByUser = async (req, res, next) => {
     const { "User Name": name, Email: email } = req.body;
     let targetUser = {};

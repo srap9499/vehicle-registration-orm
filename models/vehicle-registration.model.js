@@ -1,3 +1,5 @@
+// Sequelize model for Vehicle Registration
+
 module.exports = (sequelize, Sequelize) => {
     const VehicleRegistration = sequelize.define("VehicleRegistration", {
         id: {

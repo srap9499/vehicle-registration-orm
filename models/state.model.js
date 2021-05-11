@@ -1,3 +1,5 @@
+// Sequelize model for States
+
 module.exports = (sequelize, Sequelize) => {
     const State = sequelize.define("States", {
         ID: {

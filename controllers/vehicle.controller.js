@@ -4,6 +4,7 @@ const createError = require('http-errors');
 const db = require('../models/db.model');
 const Vehicle = db.vehicle;
 
+// Add Vehicle
 exports.create = async (req, res, next) => {
     const { Name, Type } = req.body;
 
@@ -19,6 +20,7 @@ exports.create = async (req, res, next) => {
     }
 };
 
+// GET all Vehicle data
 exports.findAll = async (req, res, next) => {
     try {
         const vehicles = await Vehicle.findAll();
@@ -28,6 +30,7 @@ exports.findAll = async (req, res, next) => {
     }
 };
 
+// GET vehicle data by ID
 exports.findOne = async (req, res, next) => {
     const { id } = req.params;
 
@@ -47,6 +50,7 @@ exports.findOne = async (req, res, next) => {
     }
 };
 
+// Update vehicle data by ID
 exports.update = async (req, res, next) => {
     const { id } = req.params;
     const { Name, Type } = req.body;
@@ -74,6 +78,7 @@ exports.update = async (req, res, next) => {
     }
 };
 
+// Delete vehicle data by ID
 exports.delete = async (req, res, next) => {
     const { id } = req.params;
 

@@ -1,3 +1,5 @@
+// Sequelize model for User
+
 module.exports = (sequelize, Sequelize) => {
     const User = sequelize.define("User", {
         id: {

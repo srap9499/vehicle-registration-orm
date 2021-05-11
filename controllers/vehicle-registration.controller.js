@@ -3,6 +3,7 @@
 const db = require('../models/db.model');
 const VehicleRegistration = db.vehicleRegistration;
 
+// Check to avoid duplicate Vehicle Registration Middleware
 exports.avoidDuplicateVehicleRegistration = async (req, res, next) => {
     try {
         const vehicleRegistrationData = req.vehicleRegistrationData;
@@ -22,6 +23,7 @@ exports.avoidDuplicateVehicleRegistration = async (req, res, next) => {
     }
 };
 
+// Add Vehicle Registration
 exports.create = async (req, res, next) => {
     try {
         const vehicleRegistrationData = req.vehicleRegistrationData;
@@ -33,6 +35,7 @@ exports.create = async (req, res, next) => {
     }
 };
 
+// GET allvehicle registration data
 exports.findAll = async (req, res, next) => {
     try {
         const vehicleRegistrations = await VehicleRegistration.findAll();
@@ -47,6 +50,7 @@ exports.findAll = async (req, res, next) => {
     }
 };
 
+// GET vehicle registration data by ID
 exports.findById = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -62,6 +66,7 @@ exports.findById = async (req, res, next) => {
     }
 };
 
+// Check for Vehice Registration exists
 exports.isVehicleRegistration = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -81,6 +86,7 @@ exports.isVehicleRegistration = async (req, res, next) => {
     }
 };
 
+// Update vehicle registration data by ID
 exports.update = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -93,6 +99,7 @@ exports.update = async (req, res, next) => {
     }
 };
 
+// Delete vehicle registration data by ID
 exports.delete = async (req, res, next) => {
     try {
         const { id } = req.params;

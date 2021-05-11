@@ -1,3 +1,5 @@
+// Sequelize connection establish and model defining 
+
 'use strict';
 
 const dbConfig = require('../config/db.config');

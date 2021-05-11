@@ -3,6 +3,7 @@
 const createError = require('http-errors');
 const bcrypt = require('bcryptjs');
 
+// Middleware to Validate all required fields for creating User
 exports.createUser = async (req, res, next) => {
     try {
         const { Name: name, Email: email, Password: password, StateID: state_id, Status: status } = req.body;
@@ -47,6 +48,7 @@ exports.createUser = async (req, res, next) => {
     }
 };
 
+// Middleware to Validate all required fields for updating User
 exports.updateUser = async (req, res, next) => {
     try {
         console.log(req.params.id);
@@ -104,6 +106,7 @@ exports.updateUser = async (req, res, next) => {
     }
 };
 
+// Middleware to Validate all required fields for creating Vehicle Registration
 exports.createVehicleRegistration = async (req, res, next) => {
     try {
         const { UserID, VehicleID, RegistrationDate, ExpiryDate } = req.body;
@@ -124,6 +127,7 @@ exports.createVehicleRegistration = async (req, res, next) => {
     }
 };
 
+// Middleware to Validate all required fields for updating Vehicle Registration
 exports.updateVehicleRegistration = async (req, res, next) => {
     try {
         console.log(req.params.id);

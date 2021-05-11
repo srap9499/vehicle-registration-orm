@@ -8,6 +8,8 @@ const app = express();
 
 const port = process.env.PORT | 3000;
 
+
+// Request body parser
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
@@ -29,7 +31,7 @@ app.use('/listWithVehicleState',listWithVehicleStateRouter);
 app.use('/listWithVehicle',listWithVehicleRouter);
 app.use('/exportToCsv', exportToCsvRouter);
 
-
+// Error handler middleware
 app.use(errorHandler);
 
 app.listen(port, () => {

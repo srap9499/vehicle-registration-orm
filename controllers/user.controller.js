@@ -9,6 +9,7 @@ const {
     vehicleRegistration: VehicleRegistration
 } = db;
 
+// Check to avoid duplicate user Middleware
 exports.avoidDuplicateUser = async (req, res, next) => {
     try {
         const email = req.userData.email;
@@ -28,6 +29,7 @@ exports.avoidDuplicateUser = async (req, res, next) => {
     }
 };
 
+// User Sign Up
 exports.signUp = async (req, res, next) => {
     try {
         const userData = req.userData;
@@ -39,6 +41,7 @@ exports.signUp = async (req, res, next) => {
     }
 };
 
+// User Sign In
 exports.validateSignIn = async (req, res, next) => {
     const { "Email ID": email, Password: password } = req.body;
     if (!email || !password) {
@@ -82,6 +85,7 @@ exports.validateSignIn = async (req, res, next) => {
     }
 };
 
+// Get all User Data
 exports.findAll = async (req, res, next) => {
     try {
         const users = await User.findAll();
@@ -96,6 +100,7 @@ exports.findAll = async (req, res, next) => {
     }
 };
 
+// GET User data by ID
 exports.findById = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -111,6 +116,7 @@ exports.findById = async (req, res, next) => {
     }
 };
 
+// Check for User Exists
 exports.isUser = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -130,6 +136,7 @@ exports.isUser = async (req, res, next) => {
     }
 };
 
+// Update User fields by ID
 exports.update = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -142,6 +149,7 @@ exports.update = async (req, res, next) => {
     }
 };
 
+// Delete User data by ID
 exports.delete = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -153,6 +161,7 @@ exports.delete = async (req, res, next) => {
     }
 };
 
+// GET User Dashboard
 exports.getDashboard = async (req, res, next) => {
     const { email } = req.userData;
     await User.hasMany(VehicleRegistration, {

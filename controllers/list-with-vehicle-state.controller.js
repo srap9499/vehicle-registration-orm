@@ -9,6 +9,7 @@ const {
     vehicleRegistration: VehicleRegistration
 } = db;
 
+// Get List of User Data with state name vehicle registration data
 exports.findAll = async (req, res, next) => {
     await User.belongsTo(State, {
         foreignKey: "state_id"
@@ -70,6 +71,7 @@ exports.findAll = async (req, res, next) => {
         });
 };
 
+// Get List of User Data with state name vehicle registration data by target State
 exports.findByState = async (req, res, next) => {
     const { "State Name": StateName } = req.body;
 
