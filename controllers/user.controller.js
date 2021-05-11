@@ -1,8 +1,9 @@
 'use strict';
 
 const createError = require('http-errors');
-const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const db = require('../models/db.model');
+const { Promise } = require('sequelize');
 const {
     user: User,
     vehicle: Vehicle,
@@ -57,15 +58,22 @@ exports.validateSignIn = async (req, res, next) => {
             .then((data) => {
                 if (!data) {
                     next(createError(400, "Invalid Email Id!"));
-                } else if (data.password != password) {
-                    next(createError(400, "Incorrect Password!"));
                 } else {
-                    const userData = {
-                        name: data.name,
-                        email: data.email
-                    };
-                    req.userData = userData;
-                    next();
+                    bcrypt.compare(password, data.password, (err, isMatch) => {
+                        if (err) {
+                            console.log(err)
+                            next(createError("Something went wrong!"));
+                        } else if (!isMatch) {
+                            next(createError(400, "Incorrect Password!"));
+                        } else {
+                            const userData = {
+                                name: data.name,
+                                email: data.email
+                            };
+                            req.userData = userData;
+                            next();
+                        }
+                    });
                 }
             })
             .catch((err) => {

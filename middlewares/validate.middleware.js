@@ -1,23 +1,47 @@
 'use strict';
 
 const createError = require('http-errors');
+const bcrypt = require('bcryptjs');
 
 exports.createUser = async (req, res, next) => {
     try {
-        const { Name, Email, Password, StateID, Status } = req.body;
-        if (!Name || !Email || !Password || !StateID || !Status) {
+        const { Name: name, Email: email, Password: password, StateID: state_id, Status: status } = req.body;
+        if (!name || !email || !password || !state_id || !status) {
             next(createError(400, 'Please provide all required fields for Sign-Up: Name, Email, Password, StateID, Status!'));
         } else {
-            req.userData = {
-                name: Name,
-                email: Email,
-                password: Password,
-                state_id: StateID,
-                status: Status == true ? '1' : '0'
-            }
-            next();
+            const encryptPass = new Promise((resolve, reject) => {
+                const saltRounds = 10;
+                bcrypt.genSalt(saltRounds, (err, salt) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        bcrypt.hash(password, salt, (err, hash) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve(hash);
+                            }
+                        });
+                    }
+                });
+            });
+            encryptPass
+                .then((password) => {
+                    req.userData = {
+                        name,
+                        email,
+                        password,
+                        state_id,
+                        status: status == true ? '1' : '0'
+                    }
+                    next();
+                })
+                .catch((error) => {
+                    console.log(error);
+                    next(createError("Something went wrong!"));
+                });
         }
-    } catch(error) {
+    } catch (error) {
         console.log('Error occured while validating input for create user: ', error.message);
         next(error);
     }
@@ -40,7 +64,30 @@ exports.updateUser = async (req, res, next) => {
                 data.email = Email;
             }
             if (Password) {
-                data.password = Password;
+                const encryptPass = new Promise((resolve, reject) => {
+                    const saltRounds = 10;
+                    bcrypt.genSalt(saltRounds, (err, salt) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            bcrypt.hash(Password, salt, (err, hash) => {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    resolve(hash);
+                                }
+                            });
+                        }
+                    });
+                });
+                encryptPass
+                    .then((password) => {
+                        data.password = password;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        next(createError("Something went wrong!"));
+                    });
             }
             if (StateID) {
                 data.state_id = StateID;
@@ -51,7 +98,7 @@ exports.updateUser = async (req, res, next) => {
             req.userData = data;
             next();
         }
-    } catch(error) {
+    } catch (error) {
         console.log('Error occured while validating input for update user: ', error.message);
         next(error);
     }
@@ -71,7 +118,7 @@ exports.createVehicleRegistration = async (req, res, next) => {
             }
             next();
         }
-    } catch(error) {
+    } catch (error) {
         console.log('Error occured while validating input for create user: ', error.message);
         next(error);
     }
@@ -102,7 +149,7 @@ exports.updateVehicleRegistration = async (req, res, next) => {
             req.vehicleRegistrationData = data;
             next();
         }
-    } catch(error) {
+    } catch (error) {
         console.log('Error occured while validating input for update user: ', error.message);
         next(error);
     }
