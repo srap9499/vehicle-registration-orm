@@ -46,7 +46,7 @@ exports.findByUser = async (req, res, next) => {
                 include: {
                     model: Vehicle,
                     attributes: [
-                        ["Name", " Vehicle Name"],
+                        ["Name", "Vehicle Name"],
                         ["Type", "Vehicle Type"]
                     ]
                 }

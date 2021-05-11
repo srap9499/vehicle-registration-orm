@@ -3,7 +3,6 @@
 const createError = require('http-errors');
 const bcrypt = require('bcryptjs');
 const db = require('../models/db.model');
-const { Promise } = require('sequelize');
 const {
     user: User,
     vehicle: Vehicle,
