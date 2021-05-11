@@ -62,7 +62,7 @@ exports.exportToCsv = async (req, res, next) => {
                     console.log(err);
                     next(createError("Something went wrong!"));
                 } else {
-                    fs.writeFileSync("Hello.csv", csv);
+                    fs.writeFileSync("vehicle data.csv", csv);
                     res.status(200).send("data exported successfully!");
                 }
             })

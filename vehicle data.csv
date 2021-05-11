@@ -1,0 +1,8 @@
+User Name,Email ID,VehicleRegistrations
+Vaishnav,sr@gmail.com,"[{""Registration ID"":4,""Registration Date"":""2020-11-04T00:00:00.000Z"",""Expiry Date"":""2024-12-07T00:00:00.000Z"",""Vehicle"":{""Vehicle Name"":""Audi Q1"",""Vehicle Type"":""Four Wheeler""}},{""Registration ID"":5,""Registration Date"":""2020-11-04T00:00:00.000Z"",""Expiry Date"":""2024-12-07T00:00:00.000Z"",""Vehicle"":{""Vehicle Name"":""SAFARI"",""Vehicle Type"":""Four Wheeler""}}]"
+Pranav,nov@gmail.com,"[{""Registration ID"":6,""Registration Date"":""2020-11-04T00:00:00.000Z"",""Expiry Date"":""2024-12-07T00:00:00.000Z"",""Vehicle"":{""Vehicle Name"":""SAFARI"",""Vehicle Type"":""Four Wheeler""}}]"
+Vaishnav,vdc@gmail.com,[]
+Vish,moll@gmail.com,[]
+Vish, ,[]
+Vish,Vish@gmail.com,"[{""Registration ID"":7,""Registration Date"":""2020-11-04T00:00:00.000Z"",""Expiry Date"":""2024-12-07T00:00:00.000Z"",""Vehicle"":{""Vehicle Name"":""SAFARI"",""Vehicle Type"":""Four Wheeler""}}]"
+Pink,pink@gmail.com,[]
