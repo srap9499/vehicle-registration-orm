@@ -3,7 +3,11 @@
 const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
 const db = require('../models/db.model');
-const User = db.user;
+const {
+    user: User,
+    vehicle: Vehicle,
+    vehicleRegistration: VehicleRegistration
+} = db;
 
 exports.avoidDuplicateUser = async (req, res, next) => {
     try {
@@ -50,24 +54,24 @@ exports.validateSignIn = async (req, res, next) => {
                 email
             }
         })
-        .then((data) => {
-            if (!data) {
-                next(createError(400, "Invalid Email Id!"));
-            } else if (data.password != password) {
-                next(createError(400, "Incorrect Password!"));
-            } else {
-                const userData = {
-                    name: data.name,
-                    email: data.email
-                };
-                req.userData = userData;
-                next();
-            }
-        })
-        .catch((err) => {
-            console.log("Error occured while Signing In: ", err.message);
-            next(createError('Something went wrong!'));
-        });
+            .then((data) => {
+                if (!data) {
+                    next(createError(400, "Invalid Email Id!"));
+                } else if (data.password != password) {
+                    next(createError(400, "Incorrect Password!"));
+                } else {
+                    const userData = {
+                        name: data.name,
+                        email: data.email
+                    };
+                    req.userData = userData;
+                    next();
+                }
+            })
+            .catch((err) => {
+                console.log("Error occured while Signing In: ", err.message);
+                next(createError('Something went wrong!'));
+            });
     }
 };
 
@@ -75,11 +79,11 @@ exports.findAll = async (req, res, next) => {
     try {
         const users = await User.findAll();
         if (users) {
-            res.status(200).send({"Users": users});
+            res.status(200).send({ "Users": users });
         } else {
-            next(createError(404,'No user data found!'));
+            next(createError(404, 'No user data found!'));
         }
-    } catch(error) {
+    } catch (error) {
         console.log('Error occured while fetching All User Data: ', error.message);
         next(error);
     }
@@ -90,11 +94,11 @@ exports.findById = async (req, res, next) => {
         const { id } = req.params;
         const user = await User.findOne({ where: { id } });
         if (user) {
-            res.status(200).send({"User Data": user});
+            res.status(200).send({ "User Data": user });
         } else {
-            next(createError(404,'No user data found!'));
+            next(createError(404, 'No user data found!'));
         }
-    } catch(error) {
+    } catch (error) {
         console.log('Error occured while fetching User Data by Id: ', error.message);
         next(error);
     }
@@ -110,10 +114,10 @@ exports.isUser = async (req, res, next) => {
             if (user) {
                 next();
             } else {
-                next(createError(404,`No user data found with ID: ${id}`));
+                next(createError(404, `No user data found with ID: ${id}`));
             }
         }
-    } catch(error) {
+    } catch (error) {
         console.log('Error occured while checking existance of User Data: ', error.message);
         next(error);
     }
@@ -125,7 +129,7 @@ exports.update = async (req, res, next) => {
         const userData = req.userData;
         const user = await User.update(userData, { where: { id: id } });
         res.status(200).send({ "Updated User Data": user[0] });
-    } catch(error) {
+    } catch (error) {
         console.log('Error occured while updating User Data: ', error.message);
         next(error);
     }
@@ -136,12 +140,62 @@ exports.delete = async (req, res, next) => {
         const { id } = req.params;
         const user = await User.destroy({ where: { id: id } });
         res.status(200).send({ "Deleted User Data": user });
-    } catch(error) {
+    } catch (error) {
         console.log('Error occured while deleting User Data: ', error.message);
         next(error);
     }
 };
 
 exports.getDashboard = async (req, res, next) => {
-    
+    const { email } = req.userData;
+    await User.hasMany(VehicleRegistration, {
+        foreignKey: "user_id"
+    });
+    await VehicleRegistration.belongsTo(User, {
+        foreignKey: "user_id"
+    });
+    await VehicleRegistration.belongsTo(Vehicle, {
+        foreignKey: "vehicle_id"
+    });
+    await Vehicle.hasMany(VehicleRegistration, {
+        foreignKey: "vehicle_id"
+    });
+
+    await User.findAll({
+        attributes: [
+            ["name", "User Name"],
+            ["email", "Email ID"]
+        ],
+        where: {
+            email
+        },
+        right: true,
+        include: {
+            model: VehicleRegistration,
+            attributes: [
+                ["id", "Registration ID"],
+            ],
+            include: {
+                model: Vehicle,
+                attributes: [
+                    ["Name", " Vehicle Name"],
+                    ["Type", "Vehicle Type"]
+                ]
+            }
+        }
+    })
+        .then((data) => {
+            if (data.length) {
+                if (!data[0]["dataValues"]["VehicleRegistrations"].length) {
+                    data[0]["dataValues"]["VehicleRegistrations"] = "No Vehicle Registration Found!";
+                }
+                res.status(200).send(data);
+            } else {
+                next(createError(404, 'No user Data found!'));
+            }
+        })
+        .catch((err) => {
+            console.log("Error occured while fetching User dashboard: ", err.message);
+            next(createError("Something went wrong"));
+        })
 };

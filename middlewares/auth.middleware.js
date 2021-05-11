@@ -40,8 +40,8 @@ exports.authenticate = async (req, res, next) => {
                         name: data.name,
                         email: data.email
                     }
-                    res.status(200).send('Successfully Authenticated!');
-                    // next();
+                    // res.status(200).send('Successfully Authenticated!');
+                    next();
                 }
             });
         } catch(err) {
