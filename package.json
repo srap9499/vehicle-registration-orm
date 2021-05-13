@@ -1,6 +1,6 @@
 {
   "name": "vehicle-registration-orm",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Vehicle Registration Project in Express with MySQL Sequelize ORM",
   "main": "app.js",
   "scripts": {
