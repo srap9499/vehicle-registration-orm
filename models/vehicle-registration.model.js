@@ -53,6 +53,5 @@ VehicleRegistration.belongsTo(Vehicle, {
     foreignKey: "vehicle_id"
 });
 
-VehicleRegistration.sync();
 
 exports.VehicleRegistration = VehicleRegistration;

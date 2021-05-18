@@ -30,6 +30,5 @@ const State = sequelize.define("States", {
     freezeTableName: true
 });
 
-State.sync();
 
 exports.State = State;

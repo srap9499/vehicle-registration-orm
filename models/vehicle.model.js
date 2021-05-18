@@ -17,6 +17,5 @@ const Vehicle = sequelize.define("Vehicle", {
     freezeTableName: true
 });
 
-Vehicle.sync();
 
 exports.Vehicle = Vehicle;

@@ -46,6 +46,5 @@ User.belongsTo(State, {
     foreignKey: "state_id"
 });
 
-User.sync();
 
 exports.User = User;
