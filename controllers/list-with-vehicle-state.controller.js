@@ -1,35 +1,13 @@
 'use strict';
 
 const createError = require('http-errors');
-const db = require('../models/db.model');
-const {
-    state: State,
-    user: User,
-    vehicle: Vehicle,
-    vehicleRegistration: VehicleRegistration
-} = db;
+const { State } = require('../models/state.model');
+const { User } = require('../models/user.model');
+const { Vehicle } = require('../models/vehicle.model');
+const { VehicleRegistration } = require('../models/vehicle-registration.model');
 
 // Get List of User Data with state name vehicle registration data
 exports.findAll = async (req, res, next) => {
-    await User.belongsTo(State, {
-        foreignKey: "state_id"
-    });
-    await State.hasMany(User, {
-        foreignKey: "state_id"
-    });
-    await VehicleRegistration.belongsTo(User, {
-        foreignKey: "user_id"
-    });
-    await User.hasMany(VehicleRegistration, {
-        foreignKey: "user_id"
-    });
-    await VehicleRegistration.belongsTo(Vehicle, {
-        foreignKey: "vehicle_id"
-    });
-    await Vehicle.hasMany(VehicleRegistration, {
-        foreignKey: "vehicle_id"
-    });
-
     await User.findAll({
         attributes: [
             ["id", "User ID"],
@@ -74,29 +52,9 @@ exports.findAll = async (req, res, next) => {
 // Get List of User Data with state name vehicle registration data by target State
 exports.findByState = async (req, res, next) => {
     const { "State Name": StateName } = req.body;
-
     if (!StateName) {
         next(createError(400, 'Please provide target State Name!'));
     } else {
-        await User.belongsTo(State, {
-            foreignKey: "state_id"
-        });
-        await State.hasMany(User, {
-            foreignKey: "state_id"
-        });
-        await VehicleRegistration.belongsTo(User, {
-            foreignKey: "user_id"
-        });
-        await User.hasMany(VehicleRegistration, {
-            foreignKey: "user_id"
-        });
-        await VehicleRegistration.belongsTo(Vehicle, {
-            foreignKey: "vehicle_id"
-        });
-        await Vehicle.hasMany(VehicleRegistration, {
-            foreignKey: "vehicle_id"
-        });
-
         await State.findAll({
             attributes: [
                 ["StateName", "State Name"]

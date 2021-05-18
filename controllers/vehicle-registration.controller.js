@@ -1,7 +1,6 @@
 'use strict';
 
-const db = require('../models/db.model');
-const VehicleRegistration = db.vehicleRegistration;
+const { VehicleRegistration } = require('../models/vehicle-registration.model');
 
 // Check to avoid duplicate Vehicle Registration Middleware
 exports.avoidDuplicateVehicleRegistration = async (req, res, next) => {

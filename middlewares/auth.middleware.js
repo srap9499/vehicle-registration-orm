@@ -1,6 +1,8 @@
 'use strict';
 
 const { sign, verify } = require('jsonwebtoken');
+require('dotenv').config();
+const SECRET = process.env.JWT_SECRET;
 const createError = require('http-errors');
 
 // Authorization Middleware
@@ -11,7 +13,7 @@ exports.authorise = async (req, res, next) => {
         next(createError(400, "Invalid Request"));
     } else {
         try {
-            const token = sign(payload, "Hello", { expiresIn: 1 * 60 * 60 * 1000 });
+            const token = sign(payload, SECRET, { expiresIn: 1 * 60 * 60 * 1000 });
             res
                 .status(200)
                 .send({
@@ -33,8 +35,9 @@ exports.authenticate = async (req, res, next) => {
         next(createError(401, "Unauthorized!"));
     } else {
         try {
+            console.log(SECRET);
             const token = authToken.split(' ')[1];
-            verify(token, "Hello", (err, data) => {
+            verify(token, SECRET, (err, data) => {
                 if (err) {
                     next(createError(401, "Unauthorized!"));
                 } else {

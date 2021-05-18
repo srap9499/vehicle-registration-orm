@@ -18,6 +18,8 @@ router.post(
     User.signUp
 );
 
+router.get('/signIn', User.getSignIn);
+
 // User Sign In
 router.post(
     '/signIn',

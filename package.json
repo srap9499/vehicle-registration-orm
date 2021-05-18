@@ -26,6 +26,8 @@
   "homepage": "https://github.com/srap9499/vehicle-registration-orm#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "dotenv": "^9.0.2",
+    "ejs": "^3.1.6",
     "express": "^4.17.1",
     "http-errors": "^1.8.0",
     "json-2-csv": "^3.11.1",

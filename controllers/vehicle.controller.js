@@ -1,8 +1,7 @@
 'use strict';
 
 const createError = require('http-errors');
-const db = require('../models/db.model');
-const Vehicle = db.vehicle;
+const { Vehicle } = require('../models/vehicle.model');
 
 // Add Vehicle
 exports.create = async (req, res, next) => {

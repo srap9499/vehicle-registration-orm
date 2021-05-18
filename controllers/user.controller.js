@@ -2,12 +2,9 @@
 
 const createError = require('http-errors');
 const bcrypt = require('bcryptjs');
-const db = require('../models/db.model');
-const {
-    user: User,
-    vehicle: Vehicle,
-    vehicleRegistration: VehicleRegistration
-} = db;
+const { User } = require('../models/user.model');
+const { Vehicle } = require('../models/vehicle.model');
+const { VehicleRegistration } = require('../models/vehicle-registration.model');
 
 // Check to avoid duplicate user Middleware
 exports.avoidDuplicateUser = async (req, res, next) => {
@@ -39,6 +36,11 @@ exports.signUp = async (req, res, next) => {
         console.log('Error occured while creating new user: ', error.message);
         next(error);
     }
+};
+
+// User render sign in page
+exports.getSignIn = async (req, res, next) => {
+    res.render('signIn');
 };
 
 // User Sign In
@@ -164,18 +166,6 @@ exports.delete = async (req, res, next) => {
 // GET User Dashboard
 exports.getDashboard = async (req, res, next) => {
     const { email } = req.userData;
-    await User.hasMany(VehicleRegistration, {
-        foreignKey: "user_id"
-    });
-    await VehicleRegistration.belongsTo(User, {
-        foreignKey: "user_id"
-    });
-    await VehicleRegistration.belongsTo(Vehicle, {
-        foreignKey: "vehicle_id"
-    });
-    await Vehicle.hasMany(VehicleRegistration, {
-        foreignKey: "vehicle_id"
-    });
 
     await User.findAll({
         attributes: [
